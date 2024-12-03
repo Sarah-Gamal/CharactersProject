@@ -44,8 +44,17 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
    ```
 
 3. **Install dependencies** (via CocoaPods):
+   - Open Terminal and run the following command to check if CocoaPods is installed:
+        ```bash
+     pod --version
+     ```
+   - If CocoaPods is installed, this command will return the version number. If it’s not installed, you’ll see an error message.
+   - Install CocoaPods (if not installed): If CocoaPods is not installed, you can install it using the following command:
+     ```bash
+     sudo gem install cocoapods
+     ```
    - Ensure Alamofire and Kingfisher are properly set up as dependencies.
-   - For CocoaPods:
+   - For Installation:
      ```bash
      pod install
      ```
