@@ -43,7 +43,7 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
    open CharactersProject.xcodeproj
    ```
 
-3. **Install dependencies** (if needed, via CocoaPods or SPM):
+3. **Install dependencies** (via CocoaPods):
    - Ensure Alamofire and Kingfisher are properly set up as dependencies.
    - For CocoaPods:
      ```bash
@@ -73,13 +73,18 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
 
 ## Challenges and Solutions
 
-### Challenge: Handling Network Errors
-- **Problem**: Ensuring the app handles network failures gracefully.
-- **Solution**: Implemented error handling using Alamofire's built-in response validators and provided user-friendly error messages.
+### Challenge: Implementing Unit Testing
+
+- **Problem**: Writing comprehensive unit tests to ensure code reliability and maintainability.
+- **Solution**: Utilized XCTest framework to create unit tests for critical components like data models, view controllers, and network requests. Encountered challenges in testing asynchronous operations and dependencies, which were addressed by using XCTest's expectation mechanisms and dependency injection.
 
 ### Challenge: Dynamic Layouts for Multiple Screen Sizes
 - **Problem**: Designing a layout that adapts to various iPhone models.
 - **Solution**: Utilized UIKit’s `Auto Layout` constraints to ensure proper scaling and alignment.
+
+### Challenge: Handling Network Errors
+- **Problem**: Ensuring the app handles network failures gracefully.
+- **Solution**: Implemented error handling using Alamofire's built-in response validators and provided user-friendly error messages.
 
 ### Challenge: Managing Image Performance
 - **Problem**: Efficiently handling large numbers of character images.
