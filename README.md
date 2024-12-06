@@ -16,8 +16,8 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
 
 - **UIKit**: Framework used for building the app’s interface and navigation.
 - **Swift**: The programming language for iOS development.
-- **Alamofire**: A popular Swift-based networking library used for API calls, enabling efficient and streamlined handling of HTTP requests and JSON parsing.
-- **Kingfisher**: A lightweight library for downloading and caching images efficiently.
+- **URLSession**: Native iOS framework used for making network requests and parsing JSON responses.
+- **Image Caching**: Implemented manual caching for images downloaded via URLSession to optimize performance and user experience.
 - **Unit Testing**: Ensures code reliability and correctness.
 - **MVVM Architecture**: The app is built using the Model-View-ViewModel (MVVM) architecture, separating the logic for easier maintenance and testing.
 
@@ -37,33 +37,7 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
    git clone https://github.com/Sarah-Gamal/CharactersProject.git
    cd CharactersProject
    ```
-
-2. **Open the project in Xcode**:
-   ```bash
-   open CharactersProject.xcodeproj
-   ```
-
-3. **Install dependencies** (via CocoaPods):
-   - Open Terminal and run the following command to check if CocoaPods is installed:
-        ```bash
-     pod --version
-     ```
-   - If CocoaPods is installed, this command will return the version number. If it’s not installed, you’ll see an error message.
-   - Install CocoaPods (if not installed): If CocoaPods is not installed, you can install it using the following command:
-     ```bash
-     sudo gem install cocoapods
-     ```
-   - Ensure Alamofire and Kingfisher are properly set up as dependencies.
-   - For Installation:
-     ```bash
-     pod install
-     ```
-     Then open the `.xcworkspace` file instead:
-     ```bash
-     open CharactersProject.xcworkspace
-     ```
-
-4. **Build and run the project**:
+2. **Build and run the project**:
    - Select a simulator or connected device in Xcode.
    - Press `Cmd + R` to build and run the application.
 
@@ -72,8 +46,8 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
 ## Assumptions and Decisions
 
 - **Filtering Mechanism**: Assumed that the filtering functionality should be simple and intuitive using three buttons for predefined categories.
-- **Networking**: Decided to use Alamofire for its ease of use and robust handling of HTTP requests.
-- **Image Handling**: Chose Kingfisher for its efficient handling of image downloading and caching.
+- **Networking**: Decided to use URLSession for its lightweight and native integration with iOS.
+- **Image Handling**: Implemented manual caching for improved performance without external dependencies.
 - **UI Framework**: Used UIKit for flexibility in creating the app's user interface and navigation flow.
 - **API Data Format**: Assumed that the API returns JSON-formatted data; parsing was implemented accordingly.
 - **Design Approach**: Followed the design shown in the provided screenshots as closely as possible without access to design files such as XD or Figma.
@@ -93,11 +67,11 @@ The **CharactersProject** is a Swift-based iOS application that showcases a list
 
 ### Challenge: Handling Network Errors
 - **Problem**: Ensuring the app handles network failures gracefully.
-- **Solution**: Implemented error handling using Alamofire's built-in response validators and provided user-friendly error messages.
+- **Solution**: Implemented error handling with URLSession by checking error codes and providing user-friendly error messages.
 
-### Challenge: Managing Image Performance
-- **Problem**: Efficiently handling large numbers of character images.
-- **Solution**: Leveraged Kingfisher to asynchronously download and cache images, improving performance and user experience.
+### Challenge: Managing Image Performance Without Third-Party Libraries
+- **Problem**: Efficiently loading images from URLs and caching them without relying on third-party libraries.
+- **Solution**: Implemented a custom solution using URLSession to asynchronously download images and `NSCache` for caching. This approach ensures images are not reloaded unnecessarily, improving performance and reducing network usage.
 
 ---
 
