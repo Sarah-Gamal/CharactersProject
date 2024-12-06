@@ -73,7 +73,6 @@ class CharactersViewController: UIViewController, CharacterViewModelDelegate {
         self.view.addSubview(overlayView)
     }
 
-    
     private func setupActivityIndicator() {
         activityIndicator = UIActivityIndicatorView(style: .large)
         activityIndicator.center = self.view.center
@@ -86,12 +85,6 @@ class CharactersViewController: UIViewController, CharacterViewModelDelegate {
     }
     
     // MARK: - CharacterViewModelDelegate methods
-    
-    func didChangeLoadingState(isLoading: Bool) {
-        DispatchQueue.main.async {
-            self.overlayView.isHidden = !isLoading
-        }
-    }
     
     func didUpdateCharacters() {
         DispatchQueue.main.async {
@@ -142,20 +135,27 @@ extension CharactersViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         return cell
     }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.numberOfCharacters - 1 && viewModel.hasNextPage == true {
-            fetchData()
-        }
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 124
     }
     
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard !viewModel.isLoading else { return }
+        
+        if scrollView == tableView {
+            if (scrollView.contentOffset.y + scrollView.frame.size.height) >= (scrollView.contentSize.height) {
+                tableView.showLoadingFooter()
+                fetchData()
+            } else {
+                tableView.hideLoadingFooter()
+            }
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCharacter = viewModel.characterAt(index: indexPath.row)
-            navigateToCharacterDetails(selectedCharacter)
+        navigateToCharacterDetails(selectedCharacter)
     }
 }
 
@@ -171,5 +171,20 @@ extension CharactersViewController {
         let hostingController = UIHostingController(rootView: detailsView)
         hostingController.modalPresentationStyle = .fullScreen
         self.present(hostingController, animated: true)
+    }
+}
+
+extension UITableView {
+    func showLoadingFooter() {
+        let spinner = UIActivityIndicatorView(style: .medium)
+        spinner.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: self.bounds.width, height: CGFloat(50))
+        spinner.color = .orange
+        spinner.startAnimating()
+        self.tableFooterView = spinner
+    }
+    
+    func hideLoadingFooter() {
+        self.tableFooterView?.isHidden = true
+        self.tableFooterView = nil
     }
 }

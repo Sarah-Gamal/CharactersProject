@@ -9,7 +9,6 @@ import Foundation
 import Alamofire
 
 protocol CharacterViewModelDelegate: AnyObject {
-    func didChangeLoadingState(isLoading: Bool)
     func didUpdateCharacters()
     func didEncounterError(message: String)
 }
@@ -20,7 +19,7 @@ class CharacterViewModel {
     private(set) var error: Error?
     private(set) var currentPage = 1
     private var nextPageURL: String?
-    private var isLoading = false
+    var isLoading = false
     
     private let networkingService: CharacterServiceProtocol
     weak var delegate: CharacterViewModelDelegate?
@@ -65,21 +64,15 @@ class CharacterViewModel {
     func fetchCharacters() async {
         guard !isLoading else { return }
         
-        isLoading = true
-        delegate?.didChangeLoadingState(isLoading: true)
         
         do {
             let response = try await networkingService.fetchCharacters(forPage: currentPage)
-            DispatchQueue.main.async {
-                self.characters.append(contentsOf: response.results)
-                self.nextPageURL = response.info.next
-                if self.nextPageURL != nil {
-                    self.currentPage += 1
-                }
-                self.filteredCharacters = self.characters // Reset filter
-                self.delegate?.didUpdateCharacters()
-            }
-        } catch  {
+            characters.append(contentsOf: response.results)
+            nextPageURL = response.info.next
+            currentPage += nextPageURL != nil ? 1 : 0
+            self.filteredCharacters = self.characters
+            self.delegate?.didUpdateCharacters()
+        } catch {
             DispatchQueue.main.async {
                 self.error = error
                 self.delegate?.didEncounterError(message: error.localizedDescription)
@@ -88,7 +81,6 @@ class CharacterViewModel {
         
         DispatchQueue.main.async {
             self.isLoading = false
-            self.delegate?.didChangeLoadingState(isLoading: false)
         }
     }
 }
