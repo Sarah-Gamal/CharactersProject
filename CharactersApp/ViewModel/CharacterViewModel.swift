@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Alamofire
 
 protocol CharacterViewModelDelegate: AnyObject {
     func didUpdateCharacters()
