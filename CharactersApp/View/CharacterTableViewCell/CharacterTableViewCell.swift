@@ -41,13 +41,8 @@ class CharacterTableViewCell: UITableViewCell {
     }
 
     func configure(with character: Character) {
-        let placeholderImage = UIImage(named: "placeholder")
-        characterImageView.kf.indicatorType = .activity
-        characterImageView.kf.setImage(
-            with: URL(string: character.image),
-            placeholder: placeholderImage
-        )
-        nameLabel.text = (character.name) 
+        characterImageView.load(urlString: character.image)
+        nameLabel.text = (character.name)
         speciesLabel.text = character.species
     }
 }

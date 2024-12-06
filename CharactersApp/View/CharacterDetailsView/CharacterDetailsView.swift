@@ -15,18 +15,25 @@ struct CharacterDetailsView: View {
         GeometryReader { proxy in
             VStack(alignment: .leading, spacing: 20) {
                 ZStack(alignment: .topLeading) {
-                    KFImage(URL(string: character.image))
-                        .placeholder {
-                            Image("placeholder")
-                                .resizable()
-                                .scaledToFit()
-                        }
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: proxy.size.width,
-                               height: proxy.size.height * 0.48)
-                        .cornerRadius(32)
                     
+                    AsyncImage(url: URL(string:character.image)){ phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: proxy.size.width,
+                                       height: proxy.size.height * 0.48)
+                                .cornerRadius(32)
+                        case .failure(_):
+                            Image("placeholder")
+                        @unknown default:
+                            Image("placeholder")
+                        }
+                    }
+                 
                     BackButtonView()
                         .padding(.leading, 24)
                         .padding(.top, 68)
